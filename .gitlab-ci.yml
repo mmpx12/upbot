@@ -1,0 +1,6 @@
+shellcheck:
+  stage: test
+  image: alpine
+  script:
+    - apk add shellcheck
+    - shellcheck upbot.sh
