@@ -35,8 +35,8 @@ if [[ -f upbot.down ]]; then
     exit 0
   fi
   count="$(cat upbot.down)"
-  time=0
-  if [[ "$count" -ge 2 ]]; then
+  time=3
+  if [[ "$count" -ge 3 ]]; then
     touch upbot.alert
     until [[ ! -f upbot.alert ]]; do
       DownAlert "$time"
@@ -53,7 +53,7 @@ fi
 if [[ "$status_code" -ne 200 ]]; then
   (echo -ne "down "; date) >> down.log
   if [[ ! -f upbot.down ]]; then
-    echo 0 >> upbot.down
+    echo 1 >> upbot.down
   else
     value="$(cat upbot.down)"
     echo "$((value+1))" > upbot.down
