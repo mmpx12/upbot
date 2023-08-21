@@ -29,7 +29,10 @@ function UpAlert(){
 
 if [[ -f upbot.down ]]; then
   if [[ "$status_code" -eq 200 ]]; then
-    UpAlert "$(cat upbot.down)"
+    # prevent false positive (network issues etc...)
+    if [[ "$(cat upbot.down)" -ge 2 ]]; then
+      UpAlert "$(cat upbot.down)"
+    fi
     rm -f upbot.down upbot.run
     (echo -ne "Up "; date) >> down.log;
     exit 0
@@ -51,7 +54,7 @@ fi
 
 
 if [[ "$status_code" -ne 200 ]]; then
-  (echo -ne "down "; date) >> down.log
+  (echo -ne "[$status_code] down "; date) >> down.log
   if [[ ! -f upbot.down ]]; then
     echo 1 >> upbot.down
   else
